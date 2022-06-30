@@ -1,0 +1,156 @@
+
+spring:
+  application:
+    name: oneTwoOne-product
+  profiles:
+    active: prod
+  datasource:
+    dynamic:
+      primary: master # 设置默认的数据源或者数据源组,默认值即为master
+      strict: true # 严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        master:
+          url: jdbc:mysql://${customize.mysql-host}/product_manager?characterEncoding=utf-8&useSSL=false
+          username: product_manager
+          password: product_manager
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        emqx:
+          url: jdbc:mysql://${customize.mysql-host}/emqx?characterEncoding=utf-8&useSSL=false
+          username: emqx
+          password: emqx
+          driver-class-name: com.mysql.cj.jdbc.Driver
+#    type: org.springframework.jdbc.datasource.DriverManagerDataSource
+  r2dbc:
+    url: r2dbcs:mysql://${customize.mysql-host}/product_manager?characterEncoding=utf-8&useSSL=false
+    username: product_manager
+    password: product_manager
+  redis:
+    host: ${customize.redis-host} # redis主机名
+    port: 6379
+  jacson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+springdoc:
+  api-docs:
+    # 是否开启文档功能
+    enabled: true
+    title: 接口文档
+    # 全局统一鉴权配置
+    authorization:
+      key-name: X-token
+    version: 1.0
+    description: "产品管理服务API"
+    contact: maker_knz
+    # swagger后端请求地址
+    path: /api-docs
+  swagger-ui:
+    #自定义swagger前端请求路径，输入http：127.0.0.1:8080/test会自动重定向到swagger页面
+    path: /mei-dou
+  #包扫描路径
+  packages-to-scan: cn.makerknz.product.server.controller, cn.makerknz.product.server.domain
+  #这里定义了两个分组，可定义多个，也可以不定义
+  group-configs:
+    #分组名
+    - group: user
+      #按路径匹配
+      pathsToMatch: /user/**
+#      #分组名
+#    - group: user
+#      #按包路径匹配
+#      packagesToScan: com.hello.api.user
+
+#配置枚举 支持通配符 * 或者 ; 分割
+mybatis-plus:
+  type-enums-package: com.demo.mybatisplus.constant
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+
+
+emqx:
+  webhook:
+    users:
+      makerknz: 123456
+      makerknz_1: 12313123
+  http:
+    sdk:
+      url: ${customize.emqx-url}
+      app-id: "admin"
+      app-secret: "public"
+#      disabled:
+#        - client
+
+pulsar:
+  server: pulsar://${customize.redis-host}:6650
+  privateToken: safasdf
+  url: http://${customize.redis-host}:8080
+  authPluginClassName: org.apache.pulsar.client.impl.auth.AuthenticationToken
+  authParams: token:eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.JQWInEAuTzLp3yG1PIKHl4XkaRt39fZRaoOdpINv_OPeU7AdQn5un4GT_3DMd4IRqPd7fQ7z05GEc0Fw9GYKq55wbxDa6wdjAMLWs7vGYGmjrdD0h98i80BsZnI0jZMOGw4u-rVDkCnhPaxq39hZ4wMoQjNj3RF6VoNwNjv08tNBZZmtKp6NHTlATR0U7Lz8gR1NC9GvrcoxTche6DFTHEtMbvyD9u_2iH0wkLTcnwy4ek-iWkcbJ4sa7QhgABCQLKqEBiHHOO04PohQ2_YobCR75SKu4OXWQkHeXyJejQZe6b498pjZ4SrqBwaLZ8UYh_JfvCjV7oCP7_hGQ8dkrw
+
+
+minio:
+  endpoint: http://image.makerknz.cn/
+  port: 9000
+  accessKey: admin
+  secretKey: admin123
+  secure: false
+  bucketName: "esp32"
+  configDir: "/opt/minio/data"
+
+server:
+  port: 9200
+
+
+# --------------------customs -------------------------
+one-two-one:
+  sms:
+    code-length: 6
+    ali-yun-sms:
+      enabled: true # 通过配置打开sms发送验证码
+      access-key-id: LTAI5t89vj3LCNSoatXyzF2a
+      secret:  b4NHruxNsysfZPlMZJq1A3PvBfWxv
+
+
+# 开发环境profles: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+# customize
+customize:
+  mysql-host: 127.0.0.1:3306
+  redis-host: 127.0.0.1
+  pulsar-host: 127.0.0.1
+  emqx-url: http://localhost:8081
+
+
+# 开发环境profles: prod
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+# customize
+customize:
+  mysql-host: onetwoone.makerknz.cn:3306
+  redis-host: onetwoone.makerknz.cn
+  pulsar-host: onetwoone.makerknz.cn
+  emqx-url: http://127.0.0.1:8081
+
+
+# 开发环境profles: prod
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+# customize
+customize:
+  mysql-host: knz-mysql:3306
+  redis-host: knz-redies
+  pulsar-host: knz-pulsar
+  emqx-url: http://127.0.0.1:8081

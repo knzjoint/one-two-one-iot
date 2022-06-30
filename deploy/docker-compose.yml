@@ -1,0 +1,128 @@
+version: '3.8'
+
+services:
+  mysql-server:
+    image: mysql:latest
+    container_name: knz-mysql
+    restart: unless-stopped
+    command:
+    # 将mysql8.0默认密码策略 修改为 原先 策略 (mysql8.0对其默认策略做了更改 会导致密码无法匹配)
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_USER: 'dev'
+      MYSQL_PASSWORD: '12345678'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d/
+      #- ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/my.cnf:/usr/local/my.cnf
+      - ./mysql/mysql-files:/var/lib/mysql-files
+    command: >
+      bash -c "
+
+      cp /usr/local/my.cnf /etc/mysql/my.cnf
+      && chmod 644 /etc/mysql/my.cnf
+      && /entrypoint.sh mysqld
+      
+      "
+
+  mongodb-server:
+    image: mongo
+    container_name: knz-mongodb
+    tty: true
+    ports:
+      - 27017:27017
+    volumes:
+      # - ./mongo/data/db:/data/db
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+
+  redis-server:
+    image: redis:latest
+    container_name: knz-redis
+    restart: always
+    ports:
+      - "6379:6379"
+      
+  emqx-server:
+    image: emqx/emqx:4.3.5
+    container_name: knz-emqx
+    ports:
+     - "1883:1883"
+     - "8081:8081"
+     - "8083:8083"
+     - "8883:8883"
+     - "8084:8084"
+     - "18083:18083"
+    volumes:
+     - ./EMQX/etc/emqx.conf:/opt/emqx/etc/emqx.conf
+     - ./EMQX/etc/plugins/emqx_auth_mysql.conf:/opt/emqx/etc/plugins/emqx_auth_mysql.conf
+     - ./EMQX/etc/plugins/emqx_web_hook.conf:/opt/emqx/etc/plugins/emqx_web_hook.conf      
+
+  nginx-server:
+    image: nginx:stable
+    container_name: knz-nginx
+    restart: always
+    hostname: nginx
+    privileged: true
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf/conf.d:/etc/nginx/conf.d
+      - ./nginx/www/:/usr/share/nginx/html/
+      - ./nginx/logs/:/var/log/nginx/
+
+  minio-server:
+    image: minio/minio
+    container_name: knz-minio
+    hostname: "minio"
+    ports:
+      - 9000:9000 # api 端口
+      - 9001:9001 # 控制台端口
+    environment:
+      MINIO_ACCESS_KEY: admin    # 管理后台用户名
+      MINIO_SECRET_KEY: admin123 # 管理后台密码，最小8个字符
+      # MINIO_SERVER_URL: http://minio.makerknz.cn
+      # MINIO_BROWSER_REDIRECT_URL: http://console.minio.mysite.com
+    volumes:
+      - ./minio/data:/data               # 映射当前目录下的data目录至容器内/data目录
+      - ./minio/config:/root/.minio/     # 映射配置目录
+    command: server --console-address ':9001' /data  # 指定容器中的目录 /data
+    privileged: true
+    restart: always
+
+  pulsar-server:
+    image: "apachepulsar/pulsar:2.9.1"
+    container_name: knz-pulsar
+    command: bin/pulsar standalone
+    restart: always
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    volumes:
+      - ./pulsar/data:/pulsar/data
+      - ./pulsar/conf:/pulsar/conf
+
+  #product-manager-server:
+  #  image: "registry.cn-shanghai.aliyuncs.com/tot-knz/tot:1.0"
+  #  container_name: knz-product-manager
+  #  tty: true
+  #  ports:
+  #    - "9200:9200"
+
+
+volumes:
+  mongodb_data: {}

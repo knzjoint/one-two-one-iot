@@ -1,0 +1,55 @@
+[
+  {
+    "name": "1",
+    "description": "1",
+    "priority": 1,
+    "compositeRuleType": "UnitRuleGroup",
+    "composingRules": [
+      {
+        "name": "2",
+        "description": "2",
+        "condition": "user.getAge()<28",
+        "priority": 2,
+        "actions": [
+          "System.out.println(\"UnitRuleGroup not ok rule2 \")"
+        ]
+      },
+      {
+        "name": "3",
+        "description": "3",
+        "condition": "user.name.length<10",
+        "priority": 3,
+        "actions": [
+          "System.out.println(\"UnitRuleGroup rule3 \")"
+        ]
+      },
+      {
+        "name": "4",
+        "description": "4",
+        "condition": "user.name.length<10",
+        "priority": 4,
+        "actions": [
+          "System.out.println(\"UnitRuleGroup rule4 \")"
+        ]
+      },
+      {
+        "name": "5",
+        "description": "5",
+        "condition": "user.name.length<10",
+        "priority": 5,
+        "actions": [
+          "System.out.println(\"UnitRuleGroup rule5 \");UserService.doAction4(user.userinfo)"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "3",
+    "description": "3",
+    "condition": "user.name.length<50",
+    "priority": 3,
+    "actions": [
+      "System.out.println(\"default rule3 \")"
+    ]
+  }
+]

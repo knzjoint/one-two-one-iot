@@ -1,0 +1,103 @@
+// step-icon
+
+@mixin stem-img($width:24px) {
+  display: inline-block;
+  background-size: 100% 100%;
+  width: $width;
+  height: $width;
+}
+
+
+.step-tag {
+  //background: url("./assets/step-tag.png") no-repeat center;
+  background: url("~@/components/work-flow/assets/step-tag.png") no-repeat center;
+  @include stem-img;
+}
+
+.step-start {
+  background: url("~@/components/work-flow/assets/step-start.png") no-repeat center;
+  @include stem-img;
+}
+
+.step-end {
+  background: url("~@/components/work-flow/assets/step-end.png") no-repeat center;
+  @include stem-img;
+}
+
+
+.step-if {
+  background: url("~@/components/work-flow/assets/step-if.png") no-repeat center;
+  @include stem-img(30px);
+}
+
+.step-expand {
+  background: url("~@/components/work-flow/assets/step-expand.png") no-repeat center;
+  @include stem-img(30px);
+}
+
+.step-merge {
+  background: url("~@/components/work-flow/assets/step-merge.png") no-repeat center;
+  @include stem-img(30px);
+}
+
+
+.step-start2 {
+  background: url("~@/components/work-flow/assets/step-start2.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.step-stop {
+  background: url("~@/components/work-flow/assets/step-stop.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-duiqi {
+  background: url("~@/components/work-flow/assets/icon-duiqi.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-clear {
+  background: url("~@/components/work-flow/assets/icon-clear.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-redo {
+  background: url("~@/components/work-flow/assets/icon-redo.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+
+.icon-json {
+  background: url("~@/components/work-flow/assets/icon-json.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-wangge-open{
+  background: url("~@/components/work-flow/assets/icon-wangge-open.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-wangge-close{
+  background: url("~@/components/work-flow/assets/icon-wangge-close.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-undo{
+  background: url("~@/components/work-flow/assets/icon-undo.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-undo-disabled{
+  background: url("~@/components/work-flow/assets/icon-undo-disable.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-auto-sort-open{
+  background: url("~@/components/work-flow/assets/icon-auto-sort-open.png") no-repeat center;
+  @include stem-img(25px);
+}
+
+.icon-auto-sort-close{
+  background: url("~@/components/work-flow/assets/icon-auto-sort-close.png") no-repeat center;
+  @include stem-img(25px);
+}

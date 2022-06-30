@@ -1,0 +1,66 @@
+plugins {
+//    id 'org.springframework.boot' version '2.4.5'
+//    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'idea'
+    id 'java-library'
+}
+
+group = 'cn.makerknz'
+version = '0.0.1'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    maven { url 'https://maven.aliyun.com/repository/google/'}
+    maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+    mavenCentral()
+}
+
+dependencies {
+//    implementation 'org.springframework.boot:spring-boot-starter'
+//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// 指定上传的路径
+def localMavenRepo = 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
+
+// 上传Task，Gradle会生成并上传pom.xml文件。
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: localMavenRepo)
+//            //构造项目的Pom文件
+//            pom.project {
+//                name = project.name
+//                packaging = 'jar'
+//                description = 'description'
+//            }
+//        }
+//    }
+//}
+
+//jar {
+//    manifest {
+//        attributes("Main-Class": group + '.' + project.name,
+//                "Implementation-Title": "Gradle")
+//    }
+//    into('lib') {
+//        from configurations.runtime
+//    }
+//
+//    from {
+//        configurations.compile.collect { it.isDirectory()? it:zipTree(it) }
+//    }
+//}

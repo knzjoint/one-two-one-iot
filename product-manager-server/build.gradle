@@ -1,0 +1,66 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.6'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'cn.makerknz.product'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = 11
+
+def pulsarVersion = '2.9.1'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven { url 'http://maven.oschina.net/content/groups/public/'}
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation('org.springframework.boot:spring-boot-starter-data-redis')
+    implementation('org.springframework.boot:spring-boot-starter-webflux')
+    implementation('org.springframework.boot:spring-boot-starter-websocket')
+    implementation('org.springframework.boot:spring-boot-starter-data-r2dbc')
+    implementation('dev.miku:r2dbc-mysql')
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
+    compile group: 'org.apache.pulsar', name: 'pulsar-client', version: pulsarVersion
+    implementation group: 'org.apache.pulsar', name: 'pulsar-client-admin', version: pulsarVersion
+    compile 'com.alibaba:druid-spring-boot-starter:1.1.10'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.10.7'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.10.7'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.10.7'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.4.0'
+    implementation group: 'com.baomidou', name: 'dynamic-datasource-spring-boot-starter', version: '3.4.0'
+    implementation group: 'org.bitbucket.b_c', name: 'jose4j', version: '0.7.10'
+    implementation group: 'com.alibaba', name: 'druid', version: '1.2.8'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
+    implementation group: 'com.aliyun', name: 'dysmsapi20170525', version: '2.0.9'
+    /*  java 版本的依赖11   */
+    implementation 'io.github.gcdd1993:emqx-http-sdk-spring-boot-starter:0.0.2'
+    implementation group: 'io.minio', name: 'minio', version: '8.2.1'
+    /* easy rules */
+    implementation 'org.jeasy:easy-rules-core:4.1.0'
+    implementation 'org.jeasy:easy-rules-mvel:4.1.0'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    /* 代码生成器依赖 */
+    testImplementation group: 'com.baomidou', name: 'mybatis-plus-generator', version: '3.4.0'
+}
+
+test {
+    useJUnitPlatform()
+}
